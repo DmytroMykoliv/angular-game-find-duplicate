@@ -1,0 +1,14 @@
+<div class="cards-field">
+  <div
+      class="cards-field_card"
+      *ngFor="let card of cards; let i=index" 
+      (click)="addCard(card, i); checkCards(card, i)"
+  >
+      <div
+          class="cards-field_card cards-field_card--isHidden"
+          [hidden]="!checkCards(card, i)"
+      >
+          {{card}}
+      </div>
+  </div>
+</div>

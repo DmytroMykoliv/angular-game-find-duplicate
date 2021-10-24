@@ -1,0 +1,16 @@
+.game {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 1024px;
+  height: 80vh;
+
+  &_field {
+      width: 100%;
+      text-align: center;
+
+      &:first-child {
+          margin-top: 50px;
+      }
+  }
+}

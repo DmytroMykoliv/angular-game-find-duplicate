@@ -1,0 +1,19 @@
+<div class="game">
+  <div class="game_field" *ngIf="!isPlayerReady">
+      <h1 class="game_player-title">Add player name</h1>
+
+      <input
+          type="text"
+          class="game_input-name"
+          [(ngModel)]="playerName"
+          pattern="^[a-zA-Z0-9]$"
+          placeholder="add name"
+      >
+
+      <button [disabled]="playerName.length === 0" (click)="isPlayerReady = !isPlayerReady">Submit</button>
+  </div>
+
+  <div class="game_field" *ngIf="isPlayerReady && playerName">
+      <app-game-field></app-game-field>
+  </div>
+</div>
