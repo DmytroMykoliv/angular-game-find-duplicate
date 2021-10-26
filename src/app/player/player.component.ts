@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { PlayerService } from './player.service';
 
 @Component({
     selector: 'app-player',
@@ -7,10 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlayerComponent implements OnInit {
     playerName = '';
-    isPlayerReady = false;
+    errorMessage = true;
 
-    constructor() { }
+    constructor(public playerService: PlayerService) { }
 
     ngOnInit(): void {
+    }
+
+    onSubmit() {
+        const nameControl = new FormControl(this.playerName, Validators.pattern('^[a-zA-Z][a-zA-Z0-9]*'));
+        this.playerService.isPlayerReady = nameControl.valid;
+        this.errorMessage = nameControl.valid;
     }
 }

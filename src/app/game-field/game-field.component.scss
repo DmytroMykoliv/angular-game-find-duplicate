@@ -1,3 +1,9 @@
+.title-game {
+  font-weight: bold;
+  font-size: 56px;
+  color: #0d00ff;
+}
+
 .cards-field {
   $card-side: calc(80vh / 5);
 
@@ -7,30 +13,68 @@
   gap: 5%;
   width: 100%;
   height: 100%;
+  position: relative;
+  perspective: 5000px;
 
   &_card {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: $card-side;
       height: $card-side;
-      border: 1px solid #000;
-      border-radius: 5px;
+      margin-bottom: 2%;
       flex: 20%;
 
-      font-size: 8rem;
+      transform-style: preserve-3d;
+      transition: transform 0.5s;
+
+      border: 1px solid #000;
+      border-radius: 5px;
+      background: #bfffcd;
+      box-shadow: 2px 2px 20px #000;
+
+      font-size: 5rem;
       color: #7a7a7a;
 
-      background: #eafdee;
+      &:active {
+          transform: rotateY(180deg);
+          transition: transform 0.3s;
+      }
 
       &--isHidden {
-          text-align: center;
+          visibility: hidden;
           width: 100%;
-          height: 100%;
+
           border: none;
-
           transition: transform 0.7s;
-
-          &:hover {
-              transform: rotateY(360deg);
-          }
       }
   }
+
+  &_back-side,
+  &_front-side {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      backface-visibility: hidden;
+  }
+
+  &_back-side {
+      width: 80%;
+      height: 80%;
+  }
+}
+
+.alert-win{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 150px;
+  padding: 10px;
+
+  background-color: #329ccd;
+  border: 2px solid #0a240b;
+  box-shadow: 0 0 20px 10px #fff;
+
+  transform: translate(-50%, -50%);
 }

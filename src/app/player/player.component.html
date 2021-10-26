@@ -1,19 +1,28 @@
 <div class="game">
-  <div class="game_field" *ngIf="!isPlayerReady">
+  <div class="game_field" *ngIf="!playerService.isPlayerReady">
       <h1 class="game_player-title">Add player name</h1>
 
       <input
           type="text"
-          class="game_input-name"
+          class="form-control game_input-name"
           [(ngModel)]="playerName"
-          pattern="^[a-zA-Z0-9]$"
           placeholder="add name"
+          aria-label="Recipient's username"
+          aria-describedby="button-addon2"
       >
 
-      <button [disabled]="playerName.length === 0" (click)="isPlayerReady = !isPlayerReady">Submit</button>
+      <div class="game_errorMessage" *ngIf="!errorMessage">Not valid name</div>
+
+      <button
+          class="btn btn-secondary game_submit-btn"
+          [disabled]="playerName.length === 0"
+          (click)="onSubmit()"
+      >
+          Submit
+      </button>
   </div>
 
-  <div class="game_field" *ngIf="isPlayerReady && playerName">
-      <app-game-field></app-game-field>
+  <div class="game_field" *ngIf="playerService.isPlayerReady">
+      <app-game-field [playerName]="playerName"></app-game-field>
   </div>
 </div>

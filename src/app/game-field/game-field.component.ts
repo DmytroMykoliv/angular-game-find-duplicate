@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { PICTURES } from '../mock-img-for-game';
+import { Component, Input, OnInit } from '@angular/core';
+import { PlayerService } from '../player/player.service';
+import { Observable, timer } from 'rxjs';
+
 import { Card } from '../Card';
+import { PICTURES } from '../mock-img-for-game';
 
 @Component({
     selector: 'app-game-field',
@@ -8,54 +11,76 @@ import { Card } from '../Card';
     styleUrls: ['./game-field.component.scss']
 })
 export class GameFieldComponent implements OnInit {
+    @Input() playerName: string = '';
+
     cards = [...PICTURES, ...PICTURES];
     selectedCards: Card[] = [];
-    findDuplicate: Card[] = [];
+    foundedDuplicate: Card[] = [];
+    isWinner = false;
+    countClick = 0;
+    timer = 0;
+    interval: Observable<number> | undefined;
 
 
-    constructor() { }
+    constructor(public playerService: PlayerService) {}
 
     ngOnInit(): void {
+        this.interval = timer(1000, 1000);
+        this.interval.subscribe((item: number) => {
+            this.timer = item;
+        });
+
+        this.shuffle(this.cards);
     }
 
-    addCard(card: string, index: number) {
+    shuffle(array: string[]) {
+        for (let i = array.length - 1; i > 0; i--) {
+          let j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+    addSelectedCard(card: string, index: number) {
+        this.countClick++;
+
+        const isCartSelectedAlready = this.selectedCards.some(item => item.id === index + 1)
+            || this.foundedDuplicate.some(item => item.id === index + 1);
+
+
+        if (isCartSelectedAlready) {
+            return;
+        }
+
         this.selectedCards.push({ id: index + 1, name: card });
 
-        // this.findDuplicate.push(...this.selectedCards);
-
-        console.log('select', this.selectedCards);
-        console.log('find', this.findDuplicate);
-        console.log(card, index+1);
-
         if (this.selectedCards.length === 2) {
-            const isDuplicate = this.selectedCards[0].name === this.selectedCards[1].name;
-            this.findDuplicate = isDuplicate
-                ? [...this.findDuplicate, ...this.selectedCards]
-                : this.findDuplicate;
+            const isDuplicate: boolean = this.selectedCards[0].name === this.selectedCards[1].name;
 
-            this.selectedCards = [];
+            this.foundedDuplicate = isDuplicate
+                ? [...this.foundedDuplicate, ...this.selectedCards]
+                : this.foundedDuplicate;
+
+            setTimeout(() => {
+                this.selectedCards = [];
+            }, 1000);
         }
     }
 
-    checkCards(card: string, index: number) {
+    checkCards(cardName: string, index: number) {
         if (this.selectedCards.length > 0) {
-            return this.selectedCards.some(item => item.name === card && item.id === index + 1)
-            || this.findDuplicate.some(item => item.name === card && item.id === index + 1);
+            return this.selectedCards.some(card => card.name === cardName && card.id === index + 1)
+                || this.foundedDuplicate.some(card => card.name === cardName && card.id === index + 1);
         }
 
-        if (this.findDuplicate.length === 16) {
+        if (this.foundedDuplicate.length === 16) {
             setTimeout(() => {
-                this.findDuplicate = [];
+                this.foundedDuplicate = [];
 
-                // alert("Victory!!!");
+                this.isWinner = true;
             }, 1000);
         }
 
-        return this.findDuplicate
-            .some(item => item.name === card && item.id === index +1);
-    }
-
-    getHidden(card: string) {
-        return this.findDuplicate.some(item => item.name === card);
+        return this.foundedDuplicate
+            .some(card => card.name === cardName && card.id === index +1);
     }
 }

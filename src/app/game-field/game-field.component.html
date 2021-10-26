@@ -1,14 +1,34 @@
+<h2 class="title-game">Find Duplicate</h2>
+
+<h3>Player: {{playerName}}</h3>
+
 <div class="cards-field">
-  <div
-      class="cards-field_card"
-      *ngFor="let card of cards; let i=index" 
-      (click)="addCard(card, i); checkCards(card, i)"
-  >
-      <div
-          class="cards-field_card cards-field_card--isHidden"
-          [hidden]="!checkCards(card, i)"
-      >
-          {{card}}
-      </div>
-  </div>
+    <div
+        class="cards-field_card"
+        *ngFor="let card of cards; let i=index" 
+        (click)="addSelectedCard(card, i)"
+    >
+        <img
+            src="https://cdn.worldvectorlogo.com/logos/angular-icon-1.svg"
+            class="cards-field_back-side"
+            [ngClass]="{ 'cards-field_card--isHidden': checkCards(card, i) }"
+        >
+
+        <div
+            class="cards-field_front-side"
+            [ngClass]="{ 'cards-field_card--isHidden': !checkCards(card, i) }"
+        >
+            {{card}}
+        </div>
+    </div>
+
+    <span>Total time: {{timer }}</span>
+    <span>Total click: {{countClick}}</span>
+</div>
+
+<div class="alert-win" *ngIf="isWinner">
+    <h2>Winner!!!</h2>
+    <p>TotalTime: {{timer}}</p>
+    <p>Total click:{{countClick}}</p>
+    <button (click)="playerService.reset()">Reset game</button>
 </div>
