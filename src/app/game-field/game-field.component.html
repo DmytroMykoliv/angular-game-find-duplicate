@@ -8,18 +8,19 @@
         *ngFor="let card of cards; let i=index" 
         (click)="addSelectedCard(card, i)"
     >
-        <img
-            src="https://cdn.worldvectorlogo.com/logos/angular-icon-1.svg"
-            class="cards-field_back-side"
-            [ngClass]="{ 'cards-field_card--isHidden': checkCards(card, i) }"
-        >
+      <img
+        src="https://cdn.worldvectorlogo.com/logos/angular-icon-1.svg"
+        class="cards-field_back-side"
+        [ngClass]="{ 'cards-field_card--isHidden': checkCards(card, i) }"
+      >
 
-        <div
-            class="cards-field_front-side"
-            [ngClass]="{ 'cards-field_card--isHidden': !checkCards(card, i) }"
-        >
-            {{card}}
-        </div>
+      <div
+        class="cards-field_front-side"
+        [ngClass]="{ 'cards-field_card--isHidden': !checkCards(card, i) }"
+      >
+        <img [src]="card" alt="">
+          <!-- {{card}} -->
+      </div>
     </div>
 
     <span>Total time: {{ timer }}</span>

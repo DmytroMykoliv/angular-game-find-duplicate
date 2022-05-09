@@ -56,6 +56,16 @@
       height: 100%;
       position: absolute;
       backface-visibility: hidden;
+      overflow: hidden;
+  }
+
+  &_front-side img {
+    width: 100%;
+    height: inherit;
+    object-fit: cover;
+    object-position: 50% 40%;
+    vertical-align: top;
+    border-radius: 5px;
   }
 
   &_back-side {
